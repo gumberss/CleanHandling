@@ -7,6 +7,9 @@
     <Description>A clean way to deal with business logic and flows</Description>
     <AssemblyVersion></AssemblyVersion>
     <PackageTags>error handling;functional;promise</PackageTags>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <FileVersion></FileVersion>
+    <Version>$(VersionPrefix)</Version>
   </PropertyGroup>
 
 </Project>
