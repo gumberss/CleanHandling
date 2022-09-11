@@ -9,7 +9,7 @@
     <PackageTags>error handling;functional;promise</PackageTags>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <FileVersion></FileVersion>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
   </PropertyGroup>
 
 </Project>
