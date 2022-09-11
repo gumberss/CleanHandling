@@ -10,7 +10,8 @@
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <FileVersion></FileVersion>
 	<RepositoryUrl>https://github.com/gumberss/CleanHandling</RepositoryUrl>
-    <Version>1.0.7</Version>
+    <Version>1.0.8</Version>
+    <Authors>Gustavo Marin Suppi</Authors>
   </PropertyGroup>
 
 </Project>
