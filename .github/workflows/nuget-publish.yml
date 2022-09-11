@@ -25,6 +25,9 @@ jobs:
     - name: Package
       if: github.ref == 'refs/heads/main'
       run: dotnet pack -c Release -o . CleanHandling.csproj
-    - name: Publish
+    - name: Publish nuget
       if: github.ref == 'refs/heads/main'
       run: dotnet nuget push *.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+    - name: Publish Github
+      if: github.ref == 'refs/heads/main'
+      run: dotnet nuget push *.nupkg -k ${{ secrets.NUGET_API_KEY }} -s github
