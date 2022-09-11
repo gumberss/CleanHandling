@@ -1,58 +1,55 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CleanHandling
 {
     [Serializable]
-    public struct Result<T, E>
+    public struct Result<T, E> where E : class
     {
         public bool IsFailure { get; }
         public bool IsSuccess => !IsFailure;
 
-        private readonly E? _error;
-        public E? Error => _error;
+        private readonly E _error;
+        public E Error => _error;
 
-        private readonly T? _value;
-        public T? Value => IsSuccess
+        private readonly T _value;
+        public T Value => IsSuccess
             ? _value
             : throw new InvalidOperationException("Result.Value can't be used when an error happened, plese, check IsSuccess or IsFailure property before use Value property");
 
-        public Result(T? value)
+        public Result(T value)
         {
             IsFailure = false;
             _value = value;
             _error = default;
         }
 
-        public Result(E? error)
+        public Result(E error)
         {
-            IsFailure = error != null;
+            IsFailure = error != default;
             _value = default;
             _error = error;
         }
 
         public static implicit operator Result<T, E>(T value)
-            => new(value);
+            => new Result<T, E>(value);
 
         public static implicit operator Result<T, E>(E error)
-            => new(error);
+            => new Result<T, E>(error);
 
-        public static implicit operator T?(Result<T, E> result)
+        public static implicit operator T(Result<T, E> result)
             => result.Value;
 
-        public static implicit operator E?(Result<T, E> result)
+        public static implicit operator E(Result<T, E> result)
             => result.Error;
 
     }
 
     public class Result
     {
-        public static async Task<Result<T?, BusinessException>> Try<T>(Task<T?> func)
+        public static async Task<Result<T, BusinessException>> Try<T>(Task<T> func)
         {
-            async Task<Result<T?, BusinessException>> tryFunction()
+            Func<Task<Result<T, BusinessException>>> tryFunction = async () =>
             {
                 try
                 {
@@ -62,14 +59,14 @@ namespace CleanHandling
                 {
                     return new BusinessException(System.Net.HttpStatusCode.InternalServerError, ex);
                 }
-            }
+            };
 
-            return await Task.Run(() => tryFunction());
+            return await Task.Run(() => tryFunction.Invoke());
         }
 
-        public static async Task<Result<T?, BusinessException>> Try<T>(Func<Task<T?>> func)
+        public static async Task<Result<T, BusinessException>> Try<T>(Func<Task<T>> func)
         {
-            async Task<Result<T?, BusinessException>> tryFunction()
+            Func<Task<Result<T, BusinessException>>> tryFunction = async () =>
             {
                 try
                 {
@@ -79,14 +76,14 @@ namespace CleanHandling
                 {
                     return new BusinessException(System.Net.HttpStatusCode.InternalServerError, ex);
                 }
-            }
+            };
 
-            return await Task.Run(() => tryFunction());
+            return await Task.Run(() => tryFunction.Invoke());
         }
 
-        public static async Task<Result<T?, BusinessException>> Try<T>(Func<T?> func)
+        public static async Task<Result<T, BusinessException>> Try<T>(Func<T> func)
         {
-            Result<T?, BusinessException> tryFunction()
+            Func<Result<T, BusinessException>> tryFunction = () =>
             {
                 try
                 {
@@ -96,14 +93,14 @@ namespace CleanHandling
                 {
                     return new BusinessException(System.Net.HttpStatusCode.InternalServerError, ex);
                 }
-            }
+            };
 
-            return await Task.Run(() => tryFunction());
+            return await Task.Run(() => tryFunction.Invoke());
         }
 
         public static async Task<Result<bool, BusinessException>> Try(Task func)
         {
-            async Task<Result<bool, BusinessException>> tryFunction()
+            Func<Task<Result<bool, BusinessException>>> tryFunction = async () =>
             {
                 try
                 {
@@ -114,9 +111,9 @@ namespace CleanHandling
                 {
                     return new BusinessException(System.Net.HttpStatusCode.InternalServerError, ex);
                 }
-            }
+            };
 
-            return await Task.Run(() => tryFunction());
+            return await Task.Run(() => tryFunction.Invoke());
         }
 
         public static async Task<Result<bool, BusinessException>> Try(Action act)
@@ -128,19 +125,24 @@ namespace CleanHandling
             });
         }
 
-        public static Result<T?, E?> From<T, E>(T? data) 
+        public static Result<T, E> From<T, E>(T data) where E : class
         {
-            return new Result<T?, E?>(data);
+            return new Result<T, E>(data);
         }
 
-        public static Result<T?, BusinessException> From<T>(T? data)
+        public static Result<T, BusinessException> From<T>(T data)
         {
-            return new Result<T?, BusinessException>(data);
+            return new Result<T, BusinessException>(data);
         }
 
-        public static Result<T?, BusinessException> FromError<T>(BusinessException error)
+        public static Result<T, BusinessException> FromError<T>(BusinessException error)
         {
-            return new Result<T?, BusinessException>(error);
+            return new Result<T, BusinessException>(error);
+        }
+
+        public static Result<T, E> FromError<T, E>(E error) where E : class
+        {
+            return new Result<T, E>(error);
         }
     }
 }

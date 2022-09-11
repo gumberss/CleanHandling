@@ -1,11 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
-    <Authors>Gustavo Marin Suppi</Authors>
-    <Description>A clean way to deal with business logic</Description>
+    <Company>Gustavo Marin Suppi</Company>
+    <Description>A clean way to deal with business logic and flows</Description>
+    <AssemblyVersion></AssemblyVersion>
+    <PackageTags>error handling;functional;promise</PackageTags>
   </PropertyGroup>
 
 </Project>
