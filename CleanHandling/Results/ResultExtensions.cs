@@ -38,6 +38,17 @@ namespace CleanHandling
                  : await func(result.Value);
         }
 
+        public static Result<Tr, Te> Then<Ti, Tr, Te>
+          (this Result<Ti, Te> input,
+          Func<Ti, Result<Tr, Te>> func) where Te : class
+        {
+            var result = input;
+
+            return result.IsFailure
+                 ? Result.FromError<Tr, Te>(result.Error)
+                 : func(result.Value);
+        }
+
         public async static Task<Result<Tr, Te>> Then<Ti, Tr, Te>
             (this Task<Result<Ti, Te>> input,
             Func<Ti, Tr> func) where Te : class
