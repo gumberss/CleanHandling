@@ -37,7 +37,7 @@ namespace CleanHandling
         public virtual String Log()
         {
             if (_errorData is null)
-                return $"An erroru occurred: {InnerException}";
+                return $"An error occurred: {InnerException}";
 
             return $"An error occurred: Code: {Code} - {String.Join(String.Empty, this._errorData.Select(x => $"{Environment.NewLine}\t\t{x.Log()}"))}, {InnerException}";
         }

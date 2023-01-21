@@ -1,9 +1,9 @@
 # CleanHandling
 A clean way to deal with business logic and flows! 
 
-Write only the code that is important for your business rules, this library handle the errors flows, reducing boilerplate code.
+Write only the code that is important for your business rules, because this library can handle the errors flows, reducing boilerplate code.
 
-First get the result from a mathod. Ex:
+First get the result from a method, for example:
 ```c#
 var result = await Result.Try(_session.SaveChangesAsync());
 ```
